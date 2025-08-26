@@ -2,23 +2,26 @@ import java.awt.*;
 import java.applet.*;
 import java.awt.event.*;
 
-public class paint extends Applet implements MouseListener,MouseMotionListener,ActionListener
+public class paint extends Applet implements MouseListener,MouseMotionListener,ActionListener,AdjustmentListener
 {
 	int sx,sy,ex,ey;
 	TextField t1,t2,t3;
 	Button draw,erase;
+	Scrollbar s;
 	Color c;
-	int d=0;
+	int d=0,sd=0;
 
 	public void init()
 	{
 		sx=sy=ex=ey=0;
+		sd=20;
 
 		t1=new TextField("0",3);
 		t2=new TextField("0",3);
 		t3=new TextField("0",3);
 		draw=new Button("Draw");
 		erase=new Button("Erase");
+		s=new Scrollbar(Scrollbar.HORIZONTAL,10,sd,10,100);
 
 		add(t1);
 		add(t2);
@@ -26,7 +29,9 @@ public class paint extends Applet implements MouseListener,MouseMotionListener,A
 		c=new Color(0,0,0);
 		add(draw);
 		add(erase);
+		add(s);
 
+		s.addAdjustmentListener(this);
 		addMouseListener(this);
 		addMouseMotionListener(this);
 		draw.addActionListener(this);
@@ -64,7 +69,7 @@ c=new Color(Integer.parseInt(t1.getText()),Integer.parseInt(t2.getText()),Intege
 		if(d==1)
 		{
 		g.setColor(getBackground());
-		g.fillRect(sx,sy,20,20);
+		g.fillRect(sx,sy,sd,sd);
 		}
 		sx=ex;
 		sy=ey;
@@ -86,6 +91,11 @@ c=new Color(Integer.parseInt(t1.getText()),Integer.parseInt(t2.getText()),Intege
 		{
 			d=1;
 		}
+	}
+
+	public void adjustmentValueChanged(AdjustmentEvent e)
+	{
+		sd=s.getValue();
 	}
 }
 //<applet code="paint.java" height=500 width=500></applet>
